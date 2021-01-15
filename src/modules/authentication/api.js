@@ -6,10 +6,10 @@ export const login = async (email, password) => {
   localStorage.setItem('token', response.data.token);
 };
 
-export const tokenVerifyUri = () => 'token-verify/';
-export const tokenVerify = async (token) => {
+export const validateAuthTokenUri = () => 'token-verify/';
+export const validateAuthToken = async (token) => {
   try {
-    const response = await api.post(tokenVerifyUri(), { token });
+    const response = await api.post(validateAuthTokenUri(), { token });
     return true;
   } catch (error) {
     return false;
@@ -25,5 +25,8 @@ export const changePassword = async (password, token, email) => {
   await api.post(changePasswordUri(), data);
 };
 
-export const validateTokenUri = () => 'password-reset/validate_token/';
-export const validateToken = async (email, token) => await api.post(validateTokenUri(), { token });
+export const validatePasswordTokenUri = () => 'password-reset/validate_token/';
+export const validatePasswordToken = async (email, token) => await api.post(validateTokenUri(), { token });
+
+export const insertUserUri = () => 'users/';
+export const insertUser = async (user) => await api.post(insertUserUri(), { ...user });

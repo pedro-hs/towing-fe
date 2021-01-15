@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Typography, Card, Row, Col, notification } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
 import { navigate } from '@reach/router';
 
 import { forgotPassword } from 'modules/authentication/api';
+import CenterCard from 'modules/shared/components/centerCard';
 
 const tailLayout = {
   wrapperCol: {
@@ -10,8 +11,6 @@ const tailLayout = {
     sm: { offset: 10 },
   },
 };
-
-const { Title } = Typography;
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -36,52 +35,29 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Row
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <Col xs={22} md={20} lg={16} xl={10} xxl={6}>
-        <Card
-          title={
-            <Title
-              level={3}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              FORGOT MY PASSWORD
-            </Title>
-          }
+    <CenterCard text="FORGOT MY PASSWORD">
+      <Form onFinish={onFinish}>
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email!',
+              type: email,
+            },
+          ]}
         >
-          <Form onFinish={onFinish}>
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your email!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+          <Input placeholder="hello@mail.com" />
+        </Form.Item>
 
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" loading={loading}>
-                Continue
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-      </Col>
-    </Row>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Continue
+          </Button>
+        </Form.Item>
+      </Form>
+    </CenterCard>
   );
 };
 

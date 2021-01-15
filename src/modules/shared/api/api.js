@@ -7,12 +7,12 @@ const api = axios.create({
 });
 
 api.interceptors.response.use(
-  (response) => {
-    if (response.data && response.headers['content-type'] === 'application/json') {
-      response.data = camelizeKeys(response.data);
+  (config) => {
+    if (config.data && config.headers['content-type'] === 'application/json') {
+      config.data = camelizeKeys(config.data);
     }
 
-    return response;
+    return config;
   },
   (error) => Promise.reject(error)
 );
@@ -23,6 +23,8 @@ api.interceptors.request.use(
 
     if (newConfig.headers['Content-Type'] === 'multipart/form-data') return newConfig;
 
+    // config.headers.Authorization = `JWT ${localStorage.getItem('token')}`;
+
     if (config.params) newConfig.params = decamelizeKeys(config.params);
     if (config.data) newConfig.data = decamelizeKeys(config.data);
 
@@ -31,10 +33,11 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export const invalidCredentials = (requestError) =>
-  requestError.response &&
-  requestError.response.status === 400 &&
-  requestError.response.data.non_field_errors &&
-  requestError.response.data.non_field_errors.toString().includes('Unable to log in with provided credentials');
+export const invalidCredentials = (requestError) => {
+  return (
+    requestError.response?.status == 400 &&
+    requestError.response?.data?.non_field_errors?.toString().includes('Unable to log in with provided credentials')
+  );
+};
 
 export default api;

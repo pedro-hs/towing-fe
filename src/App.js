@@ -6,7 +6,7 @@ import Authentication from 'modules/authentication/index';
 import Towing from 'modules/towing/index';
 import NotFound from 'modules/shared/components/notFound/index';
 import Home from 'modules/shared/components/home/index';
-import { tokenVerify } from 'modules/authentication/api';
+import { validateAuthToken } from 'modules/authentication/api';
 
 const App = () => (
   <Router>
@@ -27,7 +27,7 @@ class Route extends React.Component {
 
   async componentWillMount() {
     const token = localStorage.getItem('token');
-    this.setState({ tokenIsValid: await tokenVerify(token) });
+    this.setState({ tokenIsValid: await validateAuthToken(token) });
   }
 
   render() {

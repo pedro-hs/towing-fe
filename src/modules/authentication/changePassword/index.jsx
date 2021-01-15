@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Typography, Card, Row, Col, notification } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
 import { navigate } from '@reach/router';
 
-import { validateToken, changePassword } from 'modules/authentication/api';
+import { validatePasswordToken, changePassword } from 'modules/authentication/api';
+import CenterCard from 'modules/shared/components/centerCard';
 
 const layout = {
   labelCol: {
@@ -17,8 +18,6 @@ const tailLayout = {
   },
 };
 
-const { Title } = Typography;
-
 const ChangePassword = (path) => {
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +25,7 @@ const ChangePassword = (path) => {
     setLoading(true);
 
     try {
-      await validateToken(path.email, path.token);
+      await validatePasswordToken(path.email, path.token);
     } catch (error) {
       notification.error({ message: 'Invalid URL to change password' });
       navigate('/');
@@ -44,7 +43,7 @@ const ChangePassword = (path) => {
     }
 
     try {
-      const response = await changePassword(values.password, path.token, path.email);
+      await changePassword(values.password, path.token, path.email);
       notification.success({ message: 'Password changed' });
       navigate('/');
     } catch (error) {
@@ -61,65 +60,41 @@ const ChangePassword = (path) => {
   };
 
   return (
-    <Row
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <Col xs={22} md={20} lg={16} xl={10} xxl={6}>
-        <Card
-          title={
-            <Title
-              level={3}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              CHANGE PASSWORD
-            </Title>
-          }
+    <CenterCard text="CHANGE PASSWORD">
+      <Form {...layout} onFinish={onFinish}>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your new password!',
+            },
+          ]}
         >
-          <Form {...layout} onFinish={onFinish}>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your new password!',
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
+          <Input.Password />
+        </Form.Item>
 
-            <Form.Item
-              label="Confirm"
-              name="confirm"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your password confirm!',
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
+        <Form.Item
+          label="Confirm"
+          name="confirm"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password confirm!',
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
 
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" loading={loading}>
-                Confirm
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-      </Col>
-    </Row>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Confirm
+          </Button>
+        </Form.Item>
+      </Form>
+    </CenterCard>
   );
 };
 

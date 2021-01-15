@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
-import { Divider, Form, Input, Button, Typography, Card, Row, Col, notification } from 'antd';
+import React from 'react';
+import { Divider, Form, Input, Button, Row, Col, notification } from 'antd';
 import { navigate } from '@reach/router';
 
 import { login } from 'modules/authentication/api';
 import { invalidCredentials } from 'modules/shared/api/api';
+import CenterCard from 'modules/shared/components/centerCard';
 
 const layout = {
   labelCol: {
@@ -17,8 +18,6 @@ const tailLayout = {
     md: { offset: 11 },
   },
 };
-
-const { Title } = Typography;
 
 const Login = () => {
   const [form] = Form.useForm();
@@ -40,77 +39,54 @@ const Login = () => {
   };
 
   return (
-    <Row
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
-      <Col xs={22} md={20} lg={16} xl={10} xxl={6}>
-        <Card
-          title={
-            <Title
-              level={3}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              LOGIN
-            </Title>
-          }
+    <CenterCard text="LOGIN">
+      <Form {...layout} form={form} onFinish={onFinish}>
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email!',
+              type: 'email',
+            },
+          ]}
         >
-          <Form {...layout} form={form} onFinish={onFinish}>
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your email!',
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+          <Input placeholder="hello@mail.com" />
+        </Form.Item>
 
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your password!',
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
 
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                Login
-              </Button>
-            </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            Login
+          </Button>
+        </Form.Item>
 
-            <Divider />
-            <Row type="flex" justify="end">
-              <Col>
-                <Button type="link" onClick={() => navigate('forgot-password')}>
-                  Forgot my password
-                </Button>
-                <Button type="link" onClick={() => navigate('register')}>
-                  Register
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </Card>
-      </Col>
-    </Row>
+        <Divider />
+        <Row type="flex" justify="end">
+          <Col>
+            <Button type="link" onClick={() => navigate('forgot-password')}>
+              Forgot my password
+            </Button>
+            <Button type="link" onClick={() => navigate('register')}>
+              Register
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </CenterCard>
   );
 };
 
