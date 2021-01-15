@@ -10,6 +10,7 @@ const layout = {
     span: 4,
   },
 };
+
 const tailLayout = {
   wrapperCol: {
     xs: { offset: 8 },
@@ -21,10 +22,6 @@ const { Title } = Typography;
 
 const Login = () => {
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) navigate('/');
-  }, []);
 
   const onFinish = async (values) => {
     try {
@@ -55,14 +52,14 @@ const Login = () => {
         <Card
           title={
             <Title
-              level={2}
+              level={3}
               style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
             >
-              Towing
+              LOGIN
             </Title>
           }
         >

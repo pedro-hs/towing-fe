@@ -6,22 +6,47 @@ import Authentication from 'modules/authentication/index';
 import Towing from 'modules/towing/index';
 import NotFound from 'modules/shared/components/notFound/index';
 import Home from 'modules/shared/components/home/index';
-import { tokenRefresh } from 'modules/authentication/api';
+import { tokenVerify } from 'modules/authentication/api';
 
 const App = () => (
   <Router>
-    <Home path="/" />
-    <Authentication path="auth/*" />
-    <PrivateRoute as={Towing} path="towing/*" />
+    <Route as={Home} path="/" />
+    <Route as={Authentication} path="auth/*" isAuth />
+    <Route as={Towing} path="towing/*" />
     <NotFound default />
   </Router>
 );
 
-class PrivateRoute extends React.Component {
+class Route extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tokenIsValid: false,
+    };
+  }
+
+  async componentWillMount() {
+    const token = localStorage.getItem('token');
+    this.setState({ tokenIsValid: await tokenVerify(token) });
+  }
+
   render() {
     let { as: Component, ...props } = this.props;
-    const token = localStorage.getItem('token');
-    return token && tokenRefresh(token) ? <Component {...props} /> : <Home path="/" />;
+    const { tokenIsValid } = this.state;
+
+    if (this.props.isAuth) {
+      if (tokenIsValid) {
+        return <Home path="/" />;
+      }
+
+      return <Component {...props} />;
+    } else {
+      if (tokenIsValid) {
+        return <Component {...props} />;
+      }
+
+      return <Home path="/" />;
+    }
   }
 }
 

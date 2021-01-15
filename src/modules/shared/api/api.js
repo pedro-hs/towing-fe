@@ -3,7 +3,7 @@ import { camelizeKeys, decamelizeKeys } from 'humps';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  headers: { Authorization: 'JWT ' + localStorage.getItem('token'), 'Content-Type': 'application/json', accept: 'application/json' },
+  headers: { 'Content-Type': 'application/json', accept: 'application/json' },
 });
 
 api.interceptors.response.use(
