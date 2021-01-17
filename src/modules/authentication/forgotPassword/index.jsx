@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, notification } from 'antd';
 import { navigate } from '@reach/router';
+import get from 'lodash/get';
 
 import { forgotPassword } from 'modules/authentication/api';
 import CenterCard from 'modules/shared/components/centerCard';
@@ -17,25 +18,27 @@ const ForgotPassword = () => {
 
   const onFinish = async (values) => {
     setLoading(true);
+
     try {
       await forgotPassword(values.email);
 
       notification.success({ message: 'Verify your email to create a new password' });
       navigate('/');
     } catch (error) {
-      const email = error.response?.data?.email;
+      const email = get(error, ['response', 'data', 'email'], []);
 
-      if (email && email.length) {
-        notification.error({ message: email[0] });
+      if (email && Array.isArray(email) && email.length) {
+        email.forEach((item) => notification.error({ message: item }));
       } else {
         notification.error({ message: 'Error while request password reset' });
       }
     }
+
     setLoading(false);
   };
 
   return (
-    <CenterCard text="FORGOT MY PASSWORD">
+    <CenterCard text="Forgot My Password" hasReturn hasGrid>
       <Form onFinish={onFinish}>
         <Form.Item
           label="Email"
@@ -44,7 +47,7 @@ const ForgotPassword = () => {
             {
               required: true,
               message: 'Please input your email!',
-              type: email,
+              type: 'email',
             },
           ]}
         >

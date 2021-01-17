@@ -1,9 +1,13 @@
 import React from 'react';
-import { Card, Row, Col, Typography } from 'antd';
+import { Card, Row, Col, Typography, Button } from 'antd';
 
 const { Title } = Typography;
 
 const CenterCard = (props) => {
+  const grid = () => {
+    if (props.hasGrid) return { xs: 22, md: 20, lg: 16, xl: 10, xxl: 6 };
+    return {};
+  };
   return (
     <Row
       style={{
@@ -13,7 +17,7 @@ const CenterCard = (props) => {
         height: '100vh',
       }}
     >
-      <Col xs={22} md={20} lg={16} xl={10} xxl={6}>
+      <Col {...grid()}>
         <Card
           title={
             <Title
@@ -26,6 +30,16 @@ const CenterCard = (props) => {
             >
               {props.text}
             </Title>
+          }
+          size="small"
+          extra={
+            props.hasReturn ? (
+              <Button type="link" onClick={() => window.history.back()}>
+                Return
+              </Button>
+            ) : (
+              <></>
+            )
           }
         >
           {props.children}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, notification } from 'antd';
 import { navigate } from '@reach/router';
+import get from 'lodash/get';
 
 import { validatePasswordToken, changePassword } from 'modules/authentication/api';
 import CenterCard from 'modules/shared/components/centerCard';
@@ -44,13 +45,14 @@ const ChangePassword = (path) => {
 
     try {
       await changePassword(values.password, path.token, path.email);
+
       notification.success({ message: 'Password changed' });
       navigate('/');
     } catch (error) {
-      const password = error.response?.data?.password;
+      const password = get(error, ['response', 'data', 'password'], []);
 
-      if (password && password.length) {
-        notification.error({ message: password[0] });
+      if (password && Array.isArray(password) && password.length) {
+        password.forEach((item) => notification.error({ message: item }));
       } else {
         notification.error({ message: 'A problem occurs during the password change' });
       }
@@ -60,7 +62,7 @@ const ChangePassword = (path) => {
   };
 
   return (
-    <CenterCard text="CHANGE PASSWORD">
+    <CenterCard text="CHANGE PASSWORD" hasGrid>
       <Form {...layout} onFinish={onFinish}>
         <Form.Item
           label="Password"

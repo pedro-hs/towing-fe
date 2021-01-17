@@ -1,13 +1,15 @@
 import React from 'react';
 import { Form, Input, notification, Button } from 'antd';
+import get from 'lodash/get';
 import { navigate } from '@reach/router';
 
 import CenterCard from 'modules/shared/components/centerCard';
-import { insertUser } from 'modules/authentication/api';
+import { insertUser } from 'modules/users/api';
+import { normalizeContact, normalizeCPF } from 'modules/shared/functions/formatters';
 
 const layout = {
   labelCol: {
-    span: 6,
+    span: 4,
   },
 };
 
@@ -29,17 +31,18 @@ const Register = () => {
       return;
     }
 
-    user.cpf = user.cpf.replace(/\./g, '').replace('-', '');
-    user.mobileNumber = user.mobileNumber.replace('(', '').replace(')', '').replace('-', '');
+    user.cpf = normalizeCPF(user.cpf);
+    user.Contact = normalizeContact(user.contact);
 
     try {
-      const response = await insertUser(user);
+      await insertUser(user);
+
       notification.success({ message: 'Created with success' });
       navigate('/');
     } catch (error) {
-      const data = error.response?.data;
+      const data = get(error, ['response', 'data'], {});
 
-      if (Array.isArray(data)) {
+      if (data && Object.keys(data).length) {
         Object.keys(data).forEach((index) => {
           data[index].forEach((item) => notification.error({ message: item }));
         });
@@ -50,7 +53,7 @@ const Register = () => {
   };
 
   return (
-    <CenterCard text="REGISTER">
+    <CenterCard text="Register" hasReturn hasGrid>
       <Form {...layout} form={form} onFinish={onFinish} validateMessages={validateMessages}>
         <Form.Item
           name={['user', 'fullName']}
@@ -94,18 +97,18 @@ const Register = () => {
         </Form.Item>
 
         <Form.Item
-          name={['user', 'mobileNumber']}
-          label="Mobile Number"
+          name={['user', 'contact']}
+          label="Contact"
           rules={[
             { required: true },
 
             {
               pattern: /^\([1-9]{2}\)(?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/,
-              message: 'Invalid. Example: (34)98811-9922',
+              message: 'Invalid. Example: (11)91111-1111',
             },
           ]}
         >
-          <Input placeholder="(34)98811-9922" />
+          <Input placeholder="(11)91111-1111" />
         </Form.Item>
 
         <Form.Item
@@ -136,7 +139,7 @@ const Register = () => {
 
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 10 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            Register
           </Button>
         </Form.Item>
       </Form>

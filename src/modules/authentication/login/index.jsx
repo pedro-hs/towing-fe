@@ -1,9 +1,9 @@
 import React from 'react';
 import { Divider, Form, Input, Button, Row, Col, notification } from 'antd';
 import { navigate } from '@reach/router';
+import get from 'lodash/get';
 
 import { login } from 'modules/authentication/api';
-import { invalidCredentials } from 'modules/shared/api/api';
 import CenterCard from 'modules/shared/components/centerCard';
 
 const layout = {
@@ -24,14 +24,19 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try {
-      await login(values.email, values.password);
+      const response = await login(values.email, values.password);
+
       notification.success({ message: 'Authentication success' });
       navigate('/');
     } catch (error) {
       form.resetFields(['password']);
 
-      if (invalidCredentials(error)) {
-        notification.error({ message: 'Authentication fail' });
+      const isUnauthorized = get(error, ['response', 'data', 'nonFieldErrors'], '')
+        .toString()
+        .includes('Unable to log in with provided credentials');
+
+      if (isUnauthorized) {
+        notification.error({ message: 'Wrong user or password' });
       } else {
         notification.error({ message: 'There was a problem during authentication' });
       }
@@ -39,7 +44,7 @@ const Login = () => {
   };
 
   return (
-    <CenterCard text="LOGIN">
+    <CenterCard text="Login" hasGrid>
       <Form {...layout} form={form} onFinish={onFinish}>
         <Form.Item
           label="Email"
@@ -78,7 +83,7 @@ const Login = () => {
         <Row type="flex" justify="end">
           <Col>
             <Button type="link" onClick={() => navigate('forgot-password')}>
-              Forgot my password
+              Forgot My Password
             </Button>
             <Button type="link" onClick={() => navigate('register')}>
               Register
