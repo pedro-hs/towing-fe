@@ -1,4 +1,4 @@
-import api from 'modules/shared/api/api';
+import api from 'shared/api/api';
 
 export const loginUri = () => 'token/auth/';
 export const login = async (email, password) => {
@@ -6,9 +6,9 @@ export const login = async (email, password) => {
   localStorage.setItem('token', response.data.token);
 };
 
-export const tokenRefreshUri = () => 'token/refresh/';
-export const tokenRefresh = async (token) => {
-  const response = await api.post(tokenRefreshUri(), { token });
+export const refreshTokenUri = () => 'token/refresh/';
+export const refreshToken = async (token) => {
+  const response = await api.post(refreshTokenUri(), { token });
   localStorage.setItem('token', response.data.token);
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col, Typography, Button } from 'antd';
+import { Card, Row, Col, Typography, Button, Divider } from 'antd';
 
 const { Title } = Typography;
 
@@ -31,18 +31,22 @@ const CenterCard = (props) => {
               {props.text}
             </Title>
           }
-          size="small"
-          extra={
-            props.hasReturn ? (
-              <Button type="link" onClick={() => window.history.back()}>
-                Return
-              </Button>
-            ) : (
-              <></>
-            )
-          }
         >
           {props.children}
+          {props.hasReturn ? (
+            <>
+              <Divider />
+              <Row display="flex" justify="end">
+                <Col>
+                  <Button type="link" onClick={() => window.history.back()}>
+                    Return
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <></>
+          )}
         </Card>
       </Col>
     </Row>

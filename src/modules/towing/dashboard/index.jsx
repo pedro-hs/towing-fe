@@ -1,6 +1,5 @@
 import React from 'react';
-import { Typography, Row, Button } from 'antd';
-import { navigate } from '@reach/router';
+import { Typography, Row } from 'antd';
 
 const { Title } = Typography;
 
@@ -15,7 +14,6 @@ const Dashboard = () => {
       }}
     >
       <Title>Map</Title>
-      <Button onClick={() => navigate('/users/list')}>List</Button>
     </Row>
   );
 };

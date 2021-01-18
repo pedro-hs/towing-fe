@@ -5,7 +5,7 @@ import Login from 'modules/authentication/login/index';
 import ForgotPassword from 'modules/authentication/forgotPassword/index';
 import ChangePassword from 'modules/authentication/changePassword/index';
 import Register from 'modules/authentication/register/index';
-import NotFound from 'modules/shared/components/notFound/index';
+import NotFound from 'shared/components/notFound/index';
 
 const Authentication = () => (
   <Router>

@@ -4,7 +4,7 @@ import { navigate } from '@reach/router';
 import get from 'lodash/get';
 
 import { login } from 'modules/authentication/api';
-import CenterCard from 'modules/shared/components/centerCard';
+import CenterCard from 'shared/components/centerCard';
 
 const layout = {
   labelCol: {
@@ -24,10 +24,10 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await login(values.email, values.password);
+      await login(values.email, values.password);
 
       notification.success({ message: 'Authentication success' });
-      navigate('/');
+      navigate('/towing');
     } catch (error) {
       form.resetFields(['password']);
 

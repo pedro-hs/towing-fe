@@ -3,9 +3,9 @@ import { Form, Input, notification, Button } from 'antd';
 import get from 'lodash/get';
 import { navigate } from '@reach/router';
 
-import CenterCard from 'modules/shared/components/centerCard';
+import CenterCard from 'shared/components/centerCard';
 import { insertUser } from 'modules/users/api';
-import { normalizeContact, normalizeCPF } from 'modules/shared/functions/formatters';
+import { normalizeContact, normalizeCPF } from 'shared/functions/formatters';
 
 const layout = {
   labelCol: {

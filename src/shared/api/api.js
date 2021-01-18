@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { camelizeKeys, decamelizeKeys } from 'humps';
-import { notification } from 'antd';
-import { navigate } from '@reach/router';
+
+import { logout } from 'shared/functions/auth';
+import { refreshToken } from 'modules/authentication/api';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -19,13 +20,11 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response.status === 401) {
       try {
-        const response = await refreshToken(localStorage.getItem('token'));
-        localStorage.setItem('token', response.data.token);
-        return response;
+        await refreshToken(localStorage.getItem('token'));
+        return;
       } catch (error) {
         notification.error({ message: 'Authorization fail' });
-        localStorage.removeItem('token');
-        navigate('/auth/login');
+        logout();
       }
     }
 

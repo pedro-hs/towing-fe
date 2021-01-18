@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Card, Col, Row, Modal, Form, Typography, notification, Table } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-import CenterCard from 'modules/shared/components/centerCard';
-import { formatCPF, formatContact, normalizeCPF } from 'modules/shared/functions/formatters';
+import CenterCard from 'shared/components/centerCard';
+import { formatCPF, formatContact, normalizeCPF } from 'shared/functions/formatters';
 import EditUser from 'modules/users/editUser/index';
 import { listUsers, deleteUser } from 'modules/users/api';
 
@@ -66,7 +66,7 @@ const ListUsers = () => {
       });
       setDataSource(response.data);
     } catch (error) {
-      notification.error('Error while list users');
+      notification.error({ message: 'Error while list users' });
     }
   };
 

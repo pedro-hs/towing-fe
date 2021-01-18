@@ -2,7 +2,7 @@ import React from 'react';
 import { Router } from '@reach/router';
 
 import ListUsers from 'modules/users/list';
-import NotFound from 'modules/shared/components/notFound/index';
+import NotFound from 'shared/components/notFound/index';
 
 const Users = () => (
   <Router>

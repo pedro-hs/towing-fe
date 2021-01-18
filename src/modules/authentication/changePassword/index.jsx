@@ -4,7 +4,7 @@ import { navigate } from '@reach/router';
 import get from 'lodash/get';
 
 import { validatePasswordToken, changePassword } from 'modules/authentication/api';
-import CenterCard from 'modules/shared/components/centerCard';
+import CenterCard from 'shared/components/centerCard';
 
 const layout = {
   labelCol: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { notification, Divider, Col, Row, Button, Form, Input } from 'antd';
 
 import { updateUser } from 'modules/users/api';
-import { normalizeContact, normalizeCPF } from 'modules/shared/functions/formatters';
+import { normalizeContact, normalizeCPF } from 'shared/functions/formatters';
 
 const layout = {
   labelCol: {
