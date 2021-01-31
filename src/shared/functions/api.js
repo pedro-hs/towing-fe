@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { camelizeKeys, decamelizeKeys } from 'humps';
 
-import { logout } from 'shared/functions/auth';
+import { logout, getToken } from 'shared/functions/security';
 import { refreshToken } from 'modules/authentication/api';
 
 const api = axios.create({
@@ -20,7 +20,7 @@ api.interceptors.response.use(
   async (error) => {
     if (error.response.status === 401) {
       try {
-        await refreshToken(localStorage.getItem('token'));
+        await refreshToken(getToken());
         return;
       } catch (error) {
         notification.error({ message: 'Authorization fail' });
@@ -34,7 +34,8 @@ api.interceptors.response.use(
 
 api.interceptors.request.use(
   (config) => {
-    if (localStorage.getItem('token')) config.headers.Authorization = `JWT ${localStorage.getItem('token')}`;
+    const token = getToken();
+    if (token) config.headers.Authorization = `JWT ${token}`;
     if (config.headers['Content-Type'] === 'multipart/form-data') return config;
     if (config.params) config.params = decamelizeKeys(config.params);
     if (config.data) config.data = decamelizeKeys(config.data);

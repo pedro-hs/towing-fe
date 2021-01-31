@@ -5,14 +5,23 @@ import { Router } from '@reach/router';
 import Authentication from 'modules/authentication/index';
 import Towing from 'modules/towing/index';
 import Users from 'modules/users/index';
-import Route from 'shared/components/route/route';
+import AuthenticationHandler from 'shared/components/authenticationHandler/index';
+import PermissionHandler from 'shared/components/permissionHandler/index';
 
 const App = () => (
   <Router>
-    <Route as={Authentication} path="auth/*" isAuth />
-    <Route as={Towing} path="towing/*" />
-    <Route as={Towing} path="towing/*" default />
-    <Route as={Users} path="users/*" />
+    <AuthenticationHandler as={Authentication} path="auth/*" isAuth />
+    <AuthenticationHandler as={AuthenticatedRoutes} path="/*" />
+  </Router>
+);
+
+const AuthenticatedRoutes = () => (
+  <Router>
+    <Towing path="towing/*" default />
+    <Towing path="towing/*" />
+    <PermissionHandler roles={['admin']} path="users/*">
+      <Users path="users/*" />
+    </PermissionHandler>
   </Router>
 );
 

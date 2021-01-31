@@ -12,7 +12,7 @@ const AccessDenied = () => (
       height: '100vh',
     }}
   >
-    <Title>You don't access to this page</Title>
+    <Title>You don't have access to this page</Title>
   </Row>
 );
 

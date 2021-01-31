@@ -3,14 +3,15 @@ import { Redirect } from '@reach/router';
 import { Layout } from 'antd';
 
 import Page from 'shared/components/page/index';
+import { getToken } from 'shared/functions/security';
 
 const { Content } = Layout;
 
-class Route extends React.Component {
+class AuthenticationHandler extends React.Component {
   render() {
     let { as: Component, ...props } = this.props;
     if (this.props.isAuth) {
-      if (localStorage.getItem('token')) return <Redirect to="/towing" noThrow />;
+      if (getToken()) return <Redirect to="/towing" noThrow />;
 
       return (
         <Layout>
@@ -20,7 +21,7 @@ class Route extends React.Component {
         </Layout>
       );
     } else {
-      if (localStorage.getItem('token')) {
+      if (getToken()) {
         return (
           <Page>
             <Component {...props} />
@@ -33,4 +34,4 @@ class Route extends React.Component {
   }
 }
 
-export default Route;
+export default AuthenticationHandler;

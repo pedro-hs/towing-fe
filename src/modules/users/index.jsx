@@ -6,7 +6,7 @@ import NotFound from 'shared/components/notFound/index';
 
 const Users = () => (
   <Router>
-    <ListUsers path="/list" />
+    <ListUsers path="/" />
     <NotFound default />
   </Router>
 );

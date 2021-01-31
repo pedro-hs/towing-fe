@@ -1,4 +1,4 @@
-import api from 'shared/api/api';
+import api from 'shared/functions/api';
 
 export const baseUri = () => 'users/';
 

@@ -24,7 +24,7 @@ const Register = () => {
   const [form] = Form.useForm();
 
   const onFinish = async (values) => {
-    const user = { ...values.user, isStaff: true };
+    const user = values.user;
 
     if (user.password !== values.confirm) {
       notification.error({ message: 'Password and confirm should be equal' });

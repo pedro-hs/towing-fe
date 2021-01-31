@@ -1,5 +1,5 @@
 import React from 'react';
-import { notification, Divider, Col, Row, Button, Form, Input } from 'antd';
+import { Switch, notification, Divider, Col, Row, Button, Form, Input } from 'antd';
 
 import { updateUser } from 'modules/users/api';
 import { normalizeContact, normalizeCPF } from 'shared/functions/formatters';
@@ -14,13 +14,15 @@ const EditUser = (props) => {
   const editUser = async () => {
     try {
       const user = props.user;
-      const contact = props.form.getFieldValue('contact') || props.user.contact;
+      const contact = props.form.getFieldValue('contact') || user.contact;
       const normalizedUser = {
         cpf: normalizeCPF(user.cpf),
         contact: normalizeContact(contact),
-        email: props.form.getFieldValue('email') || props.user.email,
+        email: props.form.getFieldValue('email') || user.email,
         fullName: props.form.getFieldValue('fullName') || user.fullName,
+        role: props.form.getFieldValue('admin') ? 'admin' : 'user',
       };
+
       await updateUser(normalizedUser);
       notification.success({ message: 'User updated' });
       props.afterSuccess();
@@ -61,6 +63,10 @@ const EditUser = (props) => {
           ]}
         >
           <Input placeholder="hello@mail.com" defaultValue={props.user.email} />
+        </Form.Item>
+
+        <Form.Item label="Admin" name="admin">
+          <Switch defaultChecked={props.user.role === 'admin'} />
         </Form.Item>
 
         <Divider />

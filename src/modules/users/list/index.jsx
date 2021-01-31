@@ -40,6 +40,10 @@ const ListUsers = () => {
       key: 'contact',
     },
     {
+      title: 'Admin',
+      render: (user) => (user.role === 'admin' ? 'Yes' : 'No'),
+    },
+    {
       key: 'edit',
       render: (user) => (
         <EditOutlined
@@ -81,7 +85,7 @@ const ListUsers = () => {
   };
 
   return (
-    <CenterCard text="Users" hasReturn>
+    <CenterCard text="Users">
       <Table dataSource={dataSource} columns={columns} style={{ whiteSpace: 'pre' }} />
 
       <Modal

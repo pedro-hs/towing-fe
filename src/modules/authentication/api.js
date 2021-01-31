@@ -1,15 +1,16 @@
-import api from 'shared/api/api';
+import api from 'shared/functions/api';
+import { setToken } from 'shared/functions/security';
 
 export const loginUri = () => 'token/auth/';
 export const login = async (email, password) => {
   const response = await api.post(loginUri(), { email, password });
-  localStorage.setItem('token', response.data.token);
+  setToken(response.data.token);
 };
 
 export const refreshTokenUri = () => 'token/refresh/';
 export const refreshToken = async (token) => {
   const response = await api.post(refreshTokenUri(), { token });
-  localStorage.setItem('token', response.data.token);
+  setToken(response.data.token);
 };
 
 export const forgotPasswordUri = (email) => `password/reset/${email}/`;
